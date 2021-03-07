@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {{all_dojos}}
+    <h1>Add a dojo</h1>
+    <form action="/process_dojo" method="POST">
+        {%csrf_token%}
+        <label for="dojo_name">Name</label>
+        <input type="text" name="dojo_name" id="dojo_name"><br>
+
+        <label for="city">City</label>
+        <input type="text" name="city" id="city"><br>
+
+        <label for="state">State</label>
+        <input type="text" name="state" id="state"><br>
+        <br>
+        <button type="submit">Add</button>
+    </form>
+
+    <h2>Add a ninja</h2>
+
+    <form action="/process_ninja" method="POST">
+        {%csrf_token%}
+
+        <label for="first_name">First Name</label>
+        <input type="text" name="first_name" id="first_name"><br>
+
+        <label for="last_name">Last name</label>
+        <input type="text" name="last_name" id="last_name"><br>
+
+        <label for="dojo_id">Dojo</label>
+        <select name="dojo_id" id="dojo_id">
+            {% for dojo in all_dojos %}
+                <option value="{{dojo.id}}">{{dojo.name}}</option>
+                {% endfor %}
+        </select>
+        <button type="submit">Add</button>
+    </form>
+    <hr>
+    {% for dojo in all_dojos %}
+    <h3>Ninjas at the {{dojo.name}}</h3>
+    {% for ninja in dojo.ninjas.all %}
+        <p>{{ninja.first_name}} {{ninja.last_name}}</p>
+        {% endfor %}
+    {% endfor %}
+</body>
+</html>
